@@ -4,7 +4,7 @@ Module Language.
   Section Language.
     Variable E: Type.
 
-    Structure t := mk {
+    Record t := mk {
       syntax: Type;
       state: Type;
 
