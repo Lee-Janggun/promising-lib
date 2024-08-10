@@ -2,7 +2,7 @@ Require Import Orders.
 Require Import OrdersFacts.
 Require Import RelationClasses.
 Require Import PArith.
-Require Import MyFMapPositive.
+Require Import MyFMapInterface MyFMapPositive.
 
 From sflib Require Import sflib.
 
@@ -808,7 +808,7 @@ Module DOMap.
 End DOMap.
 
 Module DenseOrderFacts.
-  Include (OrderedTypeFacts DenseOrder).
+  (* Include (OrderedTypeFacts DenseOrder). *)
   Include (OrderedTypeTest DenseOrder).
 
   Lemma lt_le_lt a b c

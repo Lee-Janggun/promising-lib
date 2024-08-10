@@ -515,14 +515,14 @@ case_eq (find x m); intros.
     * rewrite (find_1 H4) in H1; discriminate.
 Qed.
 
-Lemma elements_o : forall m x,
+(* Lemma elements_o : forall m x,
  find x m = findA (eqb x) (elements m).
 Proof.
 intros. rewrite eq_option_alt. intro e.
 rewrite <- find_mapsto_iff, elements_mapsto_iff.
 unfold eqb.
 rewrite <- findA_NoDupA; dintuition; try apply elements_3w; eauto.
-Qed.
+Qed. *)
 
 Lemma elements_b : forall m x,
  mem x m = existsb (fun p => eqb x (fst p)) (elements m).
@@ -860,7 +860,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     apply InA_eqke_eqk with k e; intuition.
   Qed.
 
-  Lemma of_list_1b : forall l k,
+  (* Lemma of_list_1b : forall l k,
     NoDupA eqk l ->
     find k (of_list l) = findA (eqb k) l.
   Proof.
@@ -871,7 +871,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     specialize (IH k Hnodup'); clear Hnodup'.
     rewrite add_o, IH.
     unfold eqb; do 2 destruct eq_dec as [|?Hnot]; auto; elim Hnot; eauto.
-  Qed.
+  Qed. *)
 
   Lemma of_list_2 : forall l, NoDupA eqk l ->
     equivlistA eqke l (to_list (of_list l)).
@@ -880,12 +880,12 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   rewrite <- elements_mapsto_iff, of_list_1; intuition.
   Qed.
 
-  Lemma of_list_3 : forall s, Equal (of_list (to_list s)) s.
+  (* Lemma of_list_3 : forall s, Equal (of_list (to_list s)) s.
   Proof.
   intros s k.
   rewrite of_list_1b, elements_o; auto.
   apply elements_3w.
-  Qed.
+  Qed. *)
 
   (** * Fold *)
 
@@ -902,7 +902,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   (** In the following lemma, the step hypothesis is deliberately restricted
       to the precise map m we are considering. *)
 
-  Lemma fold_rec :
+  (* Lemma fold_rec :
     forall (A:Type)(P : t elt -> A -> Type)(f : key -> elt -> A -> A),
      forall (i:A)(m:t elt),
       (forall m, Empty m -> P m i) ->
@@ -948,12 +948,12 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
       * intros; eapply Hstep'; eauto.
       * inversion_clear Hdup; auto.
       * intros; apply of_list_1b. inversion_clear Hdup; auto.
-  Qed.
+  Qed. *)
 
   (** Same, with [empty] and [add] instead of [Empty] and [Add]. In this
       case, [P] must be compatible with equality of sets *)
 
-  Theorem fold_rec_bis :
+  (* Theorem fold_rec_bis :
     forall (A:Type)(P : t elt -> A -> Type)(f : key -> elt -> A -> A),
      forall (i:A)(m:t elt),
      (forall m m' a, Equal m m' -> P m a -> P m' a) ->
@@ -968,22 +968,22 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     case_eq (find k m0); auto; intros e'; rewrite <- find_mapsto_iff.
     intro H'; elim (H k e'); auto.
   - apply Pmorphism with (add k e m'); try intro; auto.
-  Qed.
+  Qed. *)
 
-  Lemma fold_rec_nodep :
+  (* Lemma fold_rec_nodep :
     forall (A:Type)(P : A -> Type)(f : key -> elt -> A -> A)(i:A)(m:t elt),
      P i -> (forall k e a, MapsTo k e m -> P a -> P (f k e a)) ->
      P (fold f m i).
   Proof.
   intros; apply fold_rec_bis with (P:=fun _ => P); auto.
-  Qed.
+  Qed. *)
 
   (** [fold_rec_weak] is a weaker principle than [fold_rec_bis] :
       the step hypothesis must here be applicable anywhere.
       At the same time, it looks more like an induction principle,
       and hence can be easier to use. *)
 
-  Lemma fold_rec_weak :
+  (* Lemma fold_rec_weak :
     forall (A:Type)(P : t elt -> A -> Type)(f : key -> elt -> A -> A)(i:A),
     (forall m m' a, Equal m m' -> P m a -> P m' a) ->
     P (empty _) i ->
@@ -991,7 +991,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     forall m, P m (fold f m i).
   Proof.
   intros; apply fold_rec_bis; auto.
-  Qed.
+  Qed. *)
 
   Lemma fold_rel :
     forall (A B:Type)(R : A -> B -> Type)
@@ -1015,16 +1015,16 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   (** From the induction principle on [fold], we can deduce some general
       induction principles on maps. *)
 
-  Lemma map_induction :
+  (* Lemma map_induction :
    forall P : t elt -> Type,
    (forall m, Empty m -> P m) ->
    (forall m m', P m -> forall x e, ~In x m -> Add x e m m' -> P m') ->
    forall m, P m.
   Proof.
   intros. apply (@fold_rec _ (fun s _ => P s) (fun _ _ _ => tt) tt m); eauto.
-  Qed.
+  Qed. *)
 
-  Lemma map_induction_bis :
+  (* Lemma map_induction_bis :
    forall P : t elt -> Type,
    (forall m m', Equal m m' -> P m -> P m') ->
    P (empty _) ->
@@ -1033,11 +1033,11 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   Proof.
   intros.
   apply (@fold_rec_bis _ (fun s _ => P s) (fun _ _ _ => tt) tt m); eauto.
-  Qed.
+  Qed. *)
 
   (** [fold] can be used to reconstruct the same initial set. *)
 
-  Lemma fold_identity : forall m : t elt, Equal (fold (@add _) m (empty _)) m.
+  (* Lemma fold_identity : forall m : t elt, Equal (fold (@add _) m (empty _)) m.
   Proof.
   intros.
   apply fold_rec with (P:=fun m acc => Equal acc m); auto with map.
@@ -1047,7 +1047,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     intro; elim (Heq k' e'); auto.
   - intros k e a m' m'' _ _ Hadd Heq k'.
     red in Heq. rewrite Hadd, 2 add_o, Heq; auto.
-  Qed.
+  Qed. *)
 
   Section Fold_More.
 
@@ -1070,13 +1070,13 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   intros. apply Comp; auto.
   Qed.
 
-  Lemma fold_Empty :
+  (* Lemma fold_Empty :
    forall m i, Empty m -> eqA (fold f m i) i.
   Proof.
   intros. apply fold_rec_nodep with (P:=fun a => eqA a i).
   - reflexivity.
   - intros. elim (H k e); auto.
-  Qed.
+  Qed. *)
 
   (** As noticed by P. Casteran, asking for the general [SetoidList.transpose]
       here is too restrictive. Think for instance of [f] being [M.add] :
@@ -1311,7 +1311,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   Variable f : key -> elt -> bool.
   Hypothesis Hf : Proper (E.eq==>eq==>eq) f.
 
-  Lemma filter_iff : forall m k e,
+  (* Lemma filter_iff : forall m k e,
    MapsTo k e (filter f m) <-> MapsTo k e m /\ f k e = true.
   Proof.
   unfold filter.
@@ -1330,9 +1330,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     + destruct (eq_dec k k') as [Hk|Hk]; [left|right]; auto.
       elim Hn; exists e'; rewrite Hk; auto.
     + assert (f k e = f k' e') by (apply Hf; auto). congruence.
-  Qed.
+  Qed. *)
 
-  Lemma for_all_iff : forall m,
+  (* Lemma for_all_iff : forall m,
    for_all f m = true <-> (forall k e, MapsTo k e m -> f k e = true).
   Proof.
   unfold for_all.
@@ -1355,9 +1355,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     + split; try discriminate.
       intros Hmapsto. rewrite <- Hfke. apply Hmapsto.
       rewrite Hadd, add_mapsto_iff; auto.
-  Qed.
+  Qed. *)
 
-  Lemma exists_iff : forall m,
+  (* Lemma exists_iff : forall m,
    exists_ f m = true <->
    (exists p, MapsTo (fst p) (snd p) m /\ f (fst p) (snd p) = true).
   Proof.
@@ -1383,7 +1383,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
       * rewrite Hadd, add_mapsto_iff in Hke1. destruct Hke1 as [(?,?)|(?,?)].
         -- assert (f k' e' = f k e) by (apply Hf; auto). congruence.
         -- exists (k',e'); auto.
-  Qed.
+  Qed. *)
 
   End Specs.
 
@@ -1404,15 +1404,15 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   Variable f : key -> elt -> bool.
   Hypothesis Hf : Proper (E.eq==>eq==>eq) f.
 
-  Lemma partition_iff_1 : forall m m1 k e,
+  (* Lemma partition_iff_1 : forall m m1 k e,
    m1 = fst (partition f m) ->
    (MapsTo k e m1 <-> MapsTo k e m /\ f k e = true).
   Proof.
   unfold partition; simpl; intros. subst m1.
   apply filter_iff; auto.
-  Qed.
+  Qed. *)
 
-  Lemma partition_iff_2 : forall m m2 k e,
+  (* Lemma partition_iff_2 : forall m m2 k e,
    m2 = snd (partition f m) ->
    (MapsTo k e m2 <-> MapsTo k e m /\ f k e = false).
   Proof.
@@ -1422,9 +1422,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     + destruct (f k e); simpl in *; auto.
     + rewrite H'; auto.
   - repeat red; intros. f_equal. apply Hf; auto.
-  Qed.
+  Qed. *)
 
-  Lemma partition_Partition : forall m m1 m2,
+  (* Lemma partition_Partition : forall m m1 m2,
    partition f m = (m1,m2) -> Partition m m1 m2.
   Proof.
   intros. split.
@@ -1436,7 +1436,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     rewrite (@partition_iff_1 m m1), (@partition_iff_2 m m2)
       by (rewrite H; auto).
     destruct (f k e); intuition.
-  Qed.
+  Qed. *)
 
   End Partition.
 
@@ -1531,7 +1531,7 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
       apply MapsTo_1 with k'; auto.
   Qed.
 
-  Lemma Partition_fold :
+  (* Lemma Partition_fold :
    forall (A:Type)(eqA:A->A->Prop)(st:Equivalence eqA)(f:key->elt->A->A),
    Proper (E.eq==>eq==>eqA==>eqA) f ->
    transpose_neqkey eqA f ->
@@ -1579,9 +1579,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
            ++ apply fold_init with (eqA:=eqA); auto.
               symmetry.
               apply fold_Add with (eqA:=eqA); auto.
-  Qed.
+  Qed. *)
 
-  Lemma Partition_cardinal : forall m m1 m2, Partition m m1 m2 ->
+  (* Lemma Partition_cardinal : forall m m1 m2, Partition m m1 m2 ->
    cardinal m = cardinal m1 + cardinal m2.
   Proof.
   intros.
@@ -1591,9 +1591,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   - rewrite <- cardinal_fold.
     apply fold_rel with (R:=fun u v => u = v + cardinal m2); simpl; auto.
   - apply Partition_fold with (eqA:=eq); repeat red; auto.
-  Qed.
+  Qed. *)
 
-  Lemma Partition_partition : forall m m1 m2, Partition m m1 m2 ->
+  (* Lemma Partition_partition : forall m m1 m2, Partition m m1 m2 ->
     let f := fun k (_:elt) => mem k m1 in
    Equal m1 (fst (partition f m)) /\ Equal m2 (snd (partition f m)).
   Proof.
@@ -1619,9 +1619,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     intuition.
     + elim (Hm k); split; auto; exists e; auto.
     + elim H1; exists e; auto.
-  Qed.
+  Qed. *)
 
-  Lemma update_mapsto_iff : forall m m' k e,
+  (* Lemma update_mapsto_iff : forall m m' k e,
    MapsTo k e (update m m') <->
     (MapsTo k e m' \/ (MapsTo k e m /\ ~In k m')).
   Proof.
@@ -1637,17 +1637,17 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   - intros k e m0 m1 m2 _ Hn Hadd IH k' e'.
     change (Equal m2 (add k e m1)) in Hadd.
     rewrite Hadd, 2 add_mapsto_iff, IH, add_in_iff. clear IH. intuition.
-  Qed.
+  Qed. *)
 
-  Lemma update_dec : forall m m' k e, MapsTo k e (update m m') ->
+  (* Lemma update_dec : forall m m' k e, MapsTo k e (update m m') ->
    { MapsTo k e m' } + { MapsTo k e m /\ ~In k m'}.
   Proof.
   intros m m' k e H. rewrite update_mapsto_iff in H.
   destruct (In_dec m' k) as [H'|H']; [left|right]; intuition.
   elim H'; exists e; auto.
-  Defined.
+  Defined. *)
 
-  Lemma update_in_iff : forall m m' k,
+  (* Lemma update_in_iff : forall m m' k,
    In k (update m m') <-> In k m \/ In k m'.
   Proof.
   intros m m' k. split.
@@ -1659,9 +1659,9 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
     + destruct 1 as [H'|H']; [|elim H; auto].
       destruct H' as (e,H'). exists e.
       rewrite update_mapsto_iff; right; auto.
-  Qed.
+  Qed. *)
 
-  Lemma diff_mapsto_iff : forall m m' k e,
+  (* Lemma diff_mapsto_iff : forall m m' k e,
    MapsTo k e (diff m m') <-> MapsTo k e m /\ ~In k m'.
   Proof.
   intros m m' k e.
@@ -1670,18 +1670,18 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   - intuition.
     rewrite mem_1 in *; auto; discriminate.
   - intros ? ? Hk _ _ _; rewrite Hk; auto.
-  Qed.
+  Qed. *)
 
-  Lemma diff_in_iff : forall m m' k,
+  (* Lemma diff_in_iff : forall m m' k,
    In k (diff m m') <-> In k m /\ ~In k m'.
   Proof.
   intros m m' k. split.
   - intros (e,H); rewrite diff_mapsto_iff in H.
     destruct H; split; auto. exists e; auto.
   - intros ((e,H),H'); exists e; rewrite diff_mapsto_iff; auto.
-  Qed.
+  Qed. *)
 
-  Lemma restrict_mapsto_iff : forall m m' k e,
+  (* Lemma restrict_mapsto_iff : forall m m' k e,
    MapsTo k e (restrict m m') <-> MapsTo k e m /\ In k m'.
   Proof.
   intros m m' k e.
@@ -1689,16 +1689,16 @@ Module WProperties_fun (E:DecidableType)(M:WSfun E).
   rewrite filter_iff.
   - intuition.
   - intros ? ? Hk _ _ _; rewrite Hk; auto.
-  Qed.
+  Qed. *)
 
-  Lemma restrict_in_iff : forall m m' k,
+  (* Lemma restrict_in_iff : forall m m' k,
    In k (restrict m m') <-> In k m /\ In k m'.
   Proof.
   intros m m' k. split.
   - intros (e,H); rewrite restrict_mapsto_iff in H.
     destruct H; split; auto. exists e; auto.
   - intros ((e,H),H'); exists e; rewrite restrict_mapsto_iff; auto.
-  Qed.
+  Qed. *)
 
   (** specialized versions analyzing only keys (resp. elements) *)
 
