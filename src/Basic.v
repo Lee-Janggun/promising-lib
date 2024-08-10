@@ -5,7 +5,7 @@ Require Import Arith.
 Require Import PArith.
 Require Import Lia.
 Require Import UsualFMapPositive.
-Require Import FMapFacts.
+Require Import MyFMapFacts.
 Require Import MSetList.
 
 From sflib Require Import sflib.

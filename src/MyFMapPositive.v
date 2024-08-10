@@ -8,9 +8,9 @@
 (*         *     (see LICENSE file for the text of the license)         *)
 (************************************************************************)
 
-(** * FMapPositive : an implementation of FMapInterface for [positive] keys. *)
+(** * MyFMapPositive : an implementation of MyFMapInterface for [positive] keys. *)
 
-Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx FMapInterface.
+Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx MyFMapInterface.
 
 Set Implicit Arguments.
 Local Open Scope positive_scope.

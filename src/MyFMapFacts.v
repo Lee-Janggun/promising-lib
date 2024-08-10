@@ -10,13 +10,13 @@
 
 (** * Finite maps library *)
 
-(** This functor derives additional facts from [FMapInterface.S]. These
-  facts are mainly the specifications of [FMapInterface.S] written using
+(** This functor derives additional facts from [MyFMapInterface.S]. These
+  facts are mainly the specifications of [MyFMapInterface.S] written using
   different styles: equivalence and boolean equalities.
 *)
 
 Require Import Bool DecidableType DecidableTypeEx OrderedType Morphisms.
-Require Export FMapInterface.
+Require Export MyFMapInterface.
 Set Implicit Arguments.
 Unset Strict Implicit.
 

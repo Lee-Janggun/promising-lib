@@ -1,4 +1,4 @@
-Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx FMapInterface FMapPositive FMapFacts ProofIrrelevance EqdepFacts.
+Require Import Bool OrderedType ZArith OrderedType OrderedTypeEx MyFMapInterface MyFMapPositive MyFMapFacts ProofIrrelevance EqdepFacts.
 
 From sflib Require Import sflib.
 
@@ -619,8 +619,8 @@ End UsualPositiveMap'.
 Module UsualPositiveMap <: S with Module E:=PositiveOrderedTypeBits.
   Include UsualPositiveMap'.
 
-  Module Facts := FMapFacts.Facts (UsualPositiveMap').
-  Module Properties := FMapFacts.Properties (UsualPositiveMap').
+  Module Facts := MyFMapFacts.Facts (UsualPositiveMap').
+  Module Properties := MyFMapFacts.Properties (UsualPositiveMap').
 
   Lemma map_add A B (f:A -> B) i v m:
     map f (add i v m) = add i (f v) (map f m).
