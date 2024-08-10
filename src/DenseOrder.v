@@ -2,7 +2,7 @@ Require Import Orders.
 Require Import OrdersFacts.
 Require Import RelationClasses.
 Require Import PArith.
-Require Import MyFMapPositive.
+Require Import FMapPositive.
 
 From sflib Require Import sflib.
 
